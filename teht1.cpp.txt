@@ -1,0 +1,25 @@
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <mutex>
+
+std::mutex mtx;
+
+void print_message(int number) {
+    mtx.lock();
+    std::cout << "Hello from thread " << number << " (id=" << std::this_thread::get_id() << ")\n";
+    mtx.unlock();
+}
+
+int main()
+{
+    std::thread t1(print_message, 1);
+    std::thread t2(print_message, 2);
+    std::thread t3(print_message, 3);
+    std::thread t4(print_message, 4);
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+    return 0;
+}
