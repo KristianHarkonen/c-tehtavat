@@ -1,0 +1,22 @@
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+static void test_1(benchmark::State& state) {
+    srand(time(0));
+    int x = rand() % 100-50;
+  for (auto _ : state) {
+    x = -abs(x);
+    benchmark::DoNotOptimize(x);
+  }
+}
+// Register the function as a benchmark
+BENCHMARK(test_1);
+static void test_2(benchmark::State& state) {
+    srand(time(0));
+    int x = rand() % 100-50;
+  for (auto _ : state) {
+    x |= 0x80000000;
+    benchmark::DoNotOptimize(x);
+  }
+}
+BENCHMARK(test_2);

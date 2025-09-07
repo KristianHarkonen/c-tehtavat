@@ -1,0 +1,21 @@
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+static void test_1(benchmark::State& state) {
+  int count = 0;
+  for (auto _ : state) {
+    ++count % 60;  
+    // Make sure the variable is not optimized away by compiler
+    benchmark::DoNotOptimize(count);
+  }
+}
+// Register the function as a benchmark
+BENCHMARK(test_1);
+static void test_2(benchmark::State& state) {
+  int count = 0;
+  for (auto _ : state) {
+    if (++count >= 60) count = 0;
+    benchmark::DoNotOptimize(count);
+  }
+}
+BENCHMARK(test_2);

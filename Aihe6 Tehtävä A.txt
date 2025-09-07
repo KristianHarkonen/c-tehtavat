@@ -1,0 +1,30 @@
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+static void test_1(benchmark::State& state) {
+  for (auto _ : state) {
+    const int size = 1000; int i;
+    float a[size], b[size], c[size];
+    for (i = 0; i < size; i++)
+      a[i] = 0.0;
+    for (i = 0; i < size; i++)
+      b[i] = c[i];
+    benchmark::DoNotOptimize(a);
+    benchmark::DoNotOptimize(b);
+    benchmark::DoNotOptimize(c);
+  }
+}
+// Register the function as a benchmark
+BENCHMARK(test_1);
+static void test_2(benchmark::State& state) {
+  for (auto _ : state) {
+    const int size = 1000;
+    float a[size], b[size], c[size];
+    memset(a, 0, sizeof(a));
+    memcpy(b, c, sizeof(b));
+    benchmark::DoNotOptimize(a);
+    benchmark::DoNotOptimize(b);
+    benchmark::DoNotOptimize(c);
+  }
+}
+BENCHMARK(test_2);

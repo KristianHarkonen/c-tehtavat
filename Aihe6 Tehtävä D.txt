@@ -1,0 +1,21 @@
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+static void test_1(benchmark::State& state) {
+  for (auto _ : state) {
+    float a[100]; int i;
+    for (i = 0; i < 100; i++) a[i] = 2.0f * (float)i;
+    // Make sure the variable is not optimized away by compiler
+    benchmark::DoNotOptimize(i);
+  }
+}
+// Register the function as a benchmark
+BENCHMARK(test_1);
+static void test_2(benchmark::State& state) {
+  for (auto _ : state) {
+    float a[100]; int i; float i2;
+    for (i = 0, i2 = 0; i < 100; i++, i2 += 2.0f) a[i] = i2;
+    benchmark::DoNotOptimize(i);
+  }
+}
+BENCHMARK(test_2);

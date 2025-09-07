@@ -1,0 +1,32 @@
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+static void test_1(benchmark::State& state) {
+    void anyfunc(int x, int y);
+    for (auto _ : state) {
+      void func1( int *data )
+      {
+        int i;
+        for(i=0; i<10; i++)
+        anyfunc( *data, i);
+      }
+//    benchmark::DoNotOptimize(x);
+    }
+}
+// Register the function as a benchmark
+BENCHMARK(test_1);
+static void test_2(benchmark::State& state) {
+  void anyfunc(int x, int y);
+  for (auto _ : state) {
+    void func1( int *data )
+    {
+      int i;
+      int localdata;
+      localdata = *data;
+      for(i=0; i<10; i++)
+      anyfunc ( localdata, i);
+    }
+//  benchmark::DoNotOptimize(x);
+  }
+}
+BENCHMARK(test_2);

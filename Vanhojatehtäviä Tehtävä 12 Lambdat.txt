@@ -1,0 +1,55 @@
+#include <vector>
+#include<iostream>
+#include<algorithm>
+#include <bits/stdc++.h>
+using namespace std;
+
+void function1(int& a) {
+	a - 100 < 0 ? a = 0 : a = a - 100;
+}
+
+struct functor {
+	void operator()(int& a)	{
+		a - 100 < 0 ? a = 0 : a = a - 100;
+	}
+};
+
+int main() {
+	auto sorting = [](int a, int b) {
+		return a>b;
+	};
+
+	//tehtävä A
+	vector<int> HP = {50,120,2,200,150};
+	for_each(HP.begin(), HP.end(), function1);
+	sort(HP.begin(),HP.end(),sorting);
+	for (int i : HP) cout << i << " " ;
+	cout << endl;
+
+	//tehtävä B
+	functor s;
+	vector<int> HP2 = {55,170,10,190,300};
+    for_each(HP2.begin(), HP2.end(), s);
+	sort(HP2.begin(), HP2.end(), sorting);
+	for (int i : HP2) cout << i << " ";
+	cout << endl;
+
+	//tehtävä C
+	vector<int> HP4 = { 1000,170,10,230,1 };
+	for_each(HP4.begin(), HP4.end(), [](int& a) {a - 100 < 0 ? a = 0 : a = a - 100; });
+	sort(HP4.begin(), HP4.end(), sorting);
+	for (int i : HP4) cout << i << " ";
+	cout << endl;
+
+	//tehtävä D
+	auto lambda = [](int& a) {
+		a - 100 < 0 ? a = 0 : a = a - 100;
+	};
+	vector<int> HP3 = { 1,170,10,150,1 };
+	for_each(HP3.begin(), HP3.end(), lambda);
+	sort(HP3.begin(), HP3.end(), sorting);
+	for (int i : HP3) cout << i << " ";
+	cout << endl;
+
+	return 0;
+}

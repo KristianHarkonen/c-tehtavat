@@ -1,0 +1,23 @@
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+static void test_1(benchmark::State& state) {
+  for (auto _ : state) {
+    double x, n, factorial = 1.0;
+    for (x = 2.0; x <= n; x++)
+      factorial *= x;
+    // Make sure the variable is not optimized away by compiler
+    benchmark::DoNotOptimize(x);
+  }
+}
+// Register the function as a benchmark
+BENCHMARK(test_1);
+static void test_2(benchmark::State& state) {
+  for (auto _ : state) {
+    double x, n, factorial = 1.0; int i;
+    for (i = (int)n - 2, x = 2.0; i >= 0; i--, x++)
+      factorial *= x;
+    benchmark::DoNotOptimize(x);
+  }
+}
+BENCHMARK(test_2);

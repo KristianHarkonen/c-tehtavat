@@ -1,0 +1,28 @@
+#include<vector>
+#include<iostream>
+#include <iostream>
+#include <thread>
+#include <vector>
+#include <mutex>
+using namespace std;
+
+void partial_sum(mutex& Mutex, vector<int>& data, int start, int end, int& s) {
+	for (int i = start; i <= end; i++)
+	{
+		Mutex.lock();
+		s += data[i];
+		Mutex.unlock();
+	}
+}
+
+int main() {
+	int sum = 0;
+	mutex Mutex;
+	vector<int> data = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	thread t1(partial_sum, ref(Mutex), ref(data), 0, 4, ref(sum));
+	thread t2(partial_sum, ref(Mutex), ref(data), 5, 9, ref(sum));
+	t1.join();
+	t2.join();
+	cout << sum;
+	return 0;
+}

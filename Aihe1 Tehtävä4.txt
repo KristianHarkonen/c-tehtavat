@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <future>
+
+float laske_piin_likiarvo(int N)
+{
+	int n = 0;
+	for (int i = 0; i < N; ++i)
+	{
+		float x = 2.0f * rand() / RAND_MAX - 1.0f;
+		float y = 2.0f * rand() / RAND_MAX - 1.0f;
+		if (x * x + y * y <= 1) {
+			n += 1;
+		}
+	}
+	float pii = (4 * n) / (float)N;
+	return pii;
+}
+
+int main() {
+	srand((unsigned)time(0));
+	std::future<float> fut1 = std::async(std::launch::async, laske_piin_likiarvo, 1000000000);
+	std::future<float> fut2 = std::async(std::launch::async, laske_piin_likiarvo, 1000000000);
+	std::future<float> fut3 = std::async(std::launch::async, laske_piin_likiarvo, 1000000000);
+	float summa=fut1.get() + fut2.get() + fut3.get();
+	printf("Piin likiarvo: %.6f\n", summa/3.0);
+	return 0;
+}
